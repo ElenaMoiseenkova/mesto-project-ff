@@ -21,16 +21,16 @@ const formPopupNewCard = document.forms["new-place"];
 const inputCardName = document.querySelector(".popup__input_type_card-name");
 const inputTypeUrl = document.querySelector(".popup__input_type_url");
 
-function openImageModal(url, alt, text) {
-  popupImage.src = url;
-  popupImage.alt = alt;
-  popupImageTitle.textContent = text;
+function openImageModal(data) {
+  popupImage.src = data.link;
+  popupImage.alt = data.name;
+  popupImageTitle.textContent = data.name;
   openModal(popupTypeImage);
 }
 
-function sameValues(formProfile, nameProf, descriptionProf) {
-  formProfile.elements.name.value = nameProf.textContent;
-  formProfile.elements.description.value = descriptionProf.textContent;
+function fillFormValues(form, name, description) {
+  form.elements.name.value = name;
+  form.elements.description.value = description;
 }
 
 function handleProfileFormSubmit(evt) {
@@ -56,7 +56,11 @@ initialCards.forEach(function (data) {
 });
 
 buttonProfEdit.addEventListener("click", function () {
-  sameValues(formPopupProfile, titleProfile, descriptionProfile);
+  fillFormValues(
+    formPopupProfile,
+    titleProfile.textContent,
+    descriptionProfile.textContent
+  );
   openModal(popupProfile);
 });
 
@@ -66,7 +70,7 @@ buttonProfAdd.addEventListener("click", function () {
 
 document.addEventListener("click", function (evt) {
   if (evt.target.classList.contains("popup__close")) {
-    closeModal(evt.target.parentElement.parentElement);
+    closeModal(evt.target.closest(".popup"));
   }
 });
 

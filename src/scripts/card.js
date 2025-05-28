@@ -1,5 +1,3 @@
-import { openModal } from "./modal.js";
-
 const cardTemplate = document.querySelector("#card-template").content;
 
 function deleteCard(evt) {
@@ -30,7 +28,7 @@ function createCard(data, deleteCard, openImageModal, createCard) {
   buttonDelete.addEventListener("click", deleteCard);
 
   imageElement.addEventListener("click", function (evt) {
-    openImageModal(imageElement.src, imageElement.alt, imageTitle.textContent);
+    openImageModal(data);
   });
 
   buttonLike.addEventListener("click", likeCard);
