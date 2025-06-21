@@ -2,3 +2,15 @@
   opacity: 1;
   background: transparent url('../../../../images/like-active.svg') no-repeat;
 }
+
+.like__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card__like-count {
+  font-size: 13px;
+  font-weight: 400;
+  text-align: center;
+}

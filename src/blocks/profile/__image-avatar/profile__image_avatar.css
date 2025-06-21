@@ -1,0 +1,11 @@
+.profile__image_avatar {
+  position: relative;
+  cursor: pointer;
+  inline-size: fit-content;
+  block-size: fit-content;
+}
+
+.profile__image_avatar:hover .profile__image_overlay {
+  opacity: 1;
+  visibility: visible;
+}
