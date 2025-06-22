@@ -1,5 +1,5 @@
 import "./index.css";
-import { createCard} from "./scripts/card.js";
+import { createCard } from "./scripts/card.js";
 import { openModal, closeModal, closeModalOverlay } from "./scripts/modal.js";
 import { enableValidation, clearValidation } from "./scripts/validation.js";
 import {
@@ -69,7 +69,8 @@ function openImageModal(imageElementUrl, imageElementAlt, title) {
 }
 
 function likeCard(evt, cardId) {
-  const countLikes = evt.target.parentElement.querySelector(".card__like-count");
+  const countLikes =
+    evt.target.parentElement.querySelector(".card__like-count");
   const likeButton = evt.target;
 
   if (likeButton.classList.contains("card__like-button_is-active")) {
@@ -103,25 +104,25 @@ function fillFormValues(form, name, description) {
   form.elements.description.value = description;
 }
 
-    const getNewCards = (initialCards, idUser) => {
-      initialCards.forEach((newCard) => {
-        const newCardId = newCard._id;
-        const createdCard = createCard(newCard, idUser, likeCard);
-        cardsContainer.append(createdCard);
-        const buttonDelete = createdCard.querySelector(".card__delete-button");
-        const imageCard = createdCard.querySelector(".card__image");
+const getNewCards = (initialCards, idUser) => {
+  initialCards.forEach((newCard) => {
+    const newCardId = newCard._id;
+    const createdCard = createCard(newCard, idUser, likeCard);
+    cardsContainer.append(createdCard);
+    const buttonDelete = createdCard.querySelector(".card__delete-button");
+    const imageCard = createdCard.querySelector(".card__image");
 
-        if(buttonDelete != null) {
-        buttonDelete.addEventListener("click", (evt) => {
-          openModalDeleteCard(evt, newCardId);
-        });
-      }
-      
-        imageCard.addEventListener("click", function (evt) {
-          openImageModal(imageCard.src, imageCard.alt, imageCard.textContent);
-        });
+    if (buttonDelete != null) {
+      buttonDelete.addEventListener("click", (evt) => {
+        openModalDeleteCard(evt, newCardId);
       });
-    };
+    }
+
+    imageCard.addEventListener("click", function (evt) {
+      openImageModal(imageCard.src, imageCard.alt, imageCard.textContent);
+    });
+  });
+};
 
 function handlePopupRevisionDelete(evt) {
   deleteCardApi(popupRevision.dataset.cardId)
@@ -166,18 +167,18 @@ function handleNewCardFormSubmit(evt) {
     .then((addedCard) => {
       const addedCardId = addedCard._id;
       const currentCard = createCard(addedCard, idUser, likeCard);
-       cardsContainer.prepend(currentCard);
-       const buttonDelete = currentCard.querySelector(".card__delete-button");
-        const imageCard = currentCard.querySelector(".card__image");
+      cardsContainer.prepend(currentCard);
+      const buttonDelete = currentCard.querySelector(".card__delete-button");
+      const imageCard = currentCard.querySelector(".card__image");
 
-        buttonDelete.addEventListener("click", (evt) => {
-          openModalDeleteCard(evt, addedCardId);
-        });
+      buttonDelete.addEventListener("click", (evt) => {
+        openModalDeleteCard(evt, addedCardId);
+      });
 
-        imageCard.addEventListener("click", function (evt) {
-          openImageModal(imageCard.src, imageCard.alt, imageCard.textContent);
-        });
-      
+      imageCard.addEventListener("click", function (evt) {
+        openImageModal(imageCard.src, imageCard.alt, imageCard.textContent);
+      });
+
       closeModal(popupAddCard);
       formPopupNewCard.reset();
       clearValidation(formPopupNewCard, validationConfig);
@@ -224,10 +225,10 @@ buttonProfAdd.addEventListener("click", function () {
 });
 
 buttonsClose.forEach((button) => {
-  button.addEventListener('click', function (evt) {
+  button.addEventListener("click", function (evt) {
     closeModal(evt.target.closest(".popup"));
-  })
-})
+  });
+});
 
 editAvatar.addEventListener("click", function (evt) {
   formPopupAvatar.reset();

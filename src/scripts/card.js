@@ -1,7 +1,9 @@
 const cardTemplate = document.querySelector("#card-template").content;
 
 function createCard(newCard, idUser, likeCard) {
-  const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
+  const cardElement = cardTemplate
+    .querySelector(".places__item")
+    .cloneNode(true);
   const imageElement = cardElement.querySelector(".card__image");
   const imageTitle = cardElement.querySelector(".card__title");
   const buttonDelete = cardElement.querySelector(".card__delete-button");
@@ -14,10 +16,10 @@ function createCard(newCard, idUser, likeCard) {
   imageElement.alt = newCard.name;
   imageTitle.textContent = newCard.name;
   countLikesElement.textContent = newCard.likes.length;
-  
+
   if (newCard.owner._id !== idUser) {
-          buttonDelete.remove();
-        }
+    buttonDelete.remove();
+  }
 
   const isLiked = newCard.likes.some((like) => like._id === idUser);
   if (isLiked) {
