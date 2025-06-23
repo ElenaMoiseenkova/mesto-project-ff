@@ -1,3 +1,5 @@
+//нет возможности проверить правильную работу API,сервер не отвечает
+
 import "./index.css";
 import { createCard, checkStatus, changeLike} from "./scripts/card.js";
 import { openModal, closeModal, closeModalOverlay } from "./scripts/modal.js";
