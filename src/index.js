@@ -1,5 +1,5 @@
 import "./index.css";
-import { createCard } from "./scripts/card.js";
+import { createCard, checkStatus, changeLike} from "./scripts/card.js";
 import { openModal, closeModal, closeModalOverlay } from "./scripts/modal.js";
 import { enableValidation, clearValidation } from "./scripts/validation.js";
 import {
@@ -68,32 +68,6 @@ function openImageModal(imageElementUrl, imageElementAlt, title) {
   openModal(popupTypeImage);
 }
 
-function likeCard(evt, cardId) {
-  const countLikes =
-    evt.target.parentElement.querySelector(".card__like-count");
-  const likeButton = evt.target;
-
-  if (likeButton.classList.contains("card__like-button_is-active")) {
-    deleteLike(cardId)
-      .then((updatedCard) => {
-        likeButton.classList.remove("card__like-button_is-active");
-        countLikes.textContent = updatedCard.likes.length;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else {
-    putLike(cardId)
-      .then((updatedCard) => {
-        likeButton.classList.add("card__like-button_is-active");
-        countLikes.textContent = updatedCard.likes.length;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-}
-
 function openModalDeleteCard(evt, cardId) {
   openModal(popupRevision);
   popupRevision.dataset.cardId = cardId;
@@ -104,23 +78,22 @@ function fillFormValues(form, name, description) {
   form.elements.description.value = description;
 }
 
+function handleLike(button, cardId) {
+  const status = checkStatus(button);
+  const  req = status ? deleteLike : putLike;
+    req(cardId)
+      .then((updatedCard) => {
+        changeLike(button, updatedCard.likes.length);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+}
+
 const getNewCards = (initialCards, idUser) => {
   initialCards.forEach((newCard) => {
-    const newCardId = newCard._id;
-    const createdCard = createCard(newCard, idUser, likeCard);
+    const createdCard = createCard(newCard, idUser, handleLike, openModalDeleteCard, openImageModal);
     cardsContainer.append(createdCard);
-    const buttonDelete = createdCard.querySelector(".card__delete-button");
-    const imageCard = createdCard.querySelector(".card__image");
-
-    if (buttonDelete != null) {
-      buttonDelete.addEventListener("click", (evt) => {
-        openModalDeleteCard(evt, newCardId);
-      });
-    }
-
-    imageCard.addEventListener("click", function (evt) {
-      openImageModal(imageCard.src, imageCard.alt, imageCard.textContent);
-    });
   });
 };
 
@@ -165,20 +138,8 @@ function handleNewCardFormSubmit(evt) {
   const link = inputTypeUrl.value;
   addNewCard({ name, link })
     .then((addedCard) => {
-      const addedCardId = addedCard._id;
-      const currentCard = createCard(addedCard, idUser, likeCard);
+      const currentCard = createCard(addedCard, idUser, handleLike, openModalDeleteCard, openImageModal);
       cardsContainer.prepend(currentCard);
-      const buttonDelete = currentCard.querySelector(".card__delete-button");
-      const imageCard = currentCard.querySelector(".card__image");
-
-      buttonDelete.addEventListener("click", (evt) => {
-        openModalDeleteCard(evt, addedCardId);
-      });
-
-      imageCard.addEventListener("click", function (evt) {
-        openImageModal(imageCard.src, imageCard.alt, imageCard.textContent);
-      });
-
       closeModal(popupAddCard);
       formPopupNewCard.reset();
       clearValidation(formPopupNewCard, validationConfig);
@@ -274,6 +235,6 @@ getUserInfoCards()
   })
   .catch((err) => {
     console.log(err);
-  });
+  })
 
 enableValidation(validationConfig);
